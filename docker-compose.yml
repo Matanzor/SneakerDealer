@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  users-service:
+    build: ./backend/users_service  # Corrected path
+    ports:
+      - "8000:8000"
+    networks:
+      - sneakers-net
+
+  posts-service:
+    build: ./backend/posts_service  # Corrected path
+    ports:
+      - "8001:8001"
+    networks:
+      - sneakers-net
+    depends_on:
+      - users-service
+
+  frontend:
+    build: ./frontend  # Update this path if different
+    ports:
+      - "8501:8501"
+    networks:
+      - sneakers-net
+    depends_on:
+      - users-service
+      - posts-service
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks: 
+      - sneakers-net
+    volumes:
+      - mongodb_data:/data/db
+networks:
+  sneakers-net:
+    driver: bridge
+volumes:
+  mongodb_data:
