@@ -1,0 +1,15 @@
+fastapi==0.78.0
+uvicorn==0.17.6
+sqlalchemy==1.4.36
+pydantic==1.9.0
+httpx==0.23.0
+sqlalchemy-utils
+motor
+python-jose>=3.2.0
+pymongo
+dnspython
+python-multipart
+aiofiles
+pytest
+pytest-asyncio
+

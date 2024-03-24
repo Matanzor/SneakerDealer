@@ -1,0 +1,16 @@
+fastapi
+passlib
+python-jose[cryptography]
+httpx
+uvicorn==0.17.6
+email-validator
+pydantic==1.9.0 
+motor
+python-multipart
+bcrypt==3.2.0
+pymongo
+dnspython
+python-multipart
+aiofiles
+pytest
+pytest-asyncio
