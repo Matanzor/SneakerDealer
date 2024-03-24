@@ -309,7 +309,8 @@ def login_user(username, password):
 # Function to render the sidebar menu
 
 def render_sidebar_menu():
-    add_logo("http://placekitten.com/120/120")
+    if st.checkbox("Use url", value=True):
+        add_logo("https://i.pinimg.com/originals/43/fe/fb/43fefbaf627a174b43edde282f1f20df.png/120/120")
     
     st.sidebar.title("Sneaker Talk")
 
