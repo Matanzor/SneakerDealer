@@ -59,5 +59,6 @@ To execute tests, do the following:
 ### View Demo 📽️
 
 Link to YouTube video: https://www.youtube.com/watch?v=fPa3e4NP1RA
+
 Enjoy our Sneakers community! 😋
 
