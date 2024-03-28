@@ -1,12 +1,17 @@
 from pymongo import MongoClient
 import streamlit as st
+import json
 import requests
 from json.decoder import JSONDecodeError
 from PIL import Image
 import io
-from streamlit_extras.app_logo import add_logo 
+# from streamlit_extras.app_logo import add_logo 
 from streamlit_extras.let_it_rain import rain 
 from streamlit_extras.switch_page_button import switch_page 
+from streamlit_extras.app_logo import add_logo
+import random
+from streamlit_extras.colored_header import colored_header 
+from streamlit_extras.badges import badge
 
 
 mongo_uri = "mongodb+srv://admin:admin123123@cluster0.xrhcmq8.mongodb.net/?retryWrites=true&w=majority"
@@ -302,17 +307,13 @@ def login_user(username, password):
     else:
         st.error('Login failed. Please check your username and password.')
 
-
-
-
+def display_banner():
+    st.image("https://github.com/Matanzor/SneakerDealer/assets/121384944/d29c8f95-8c36-487c-a138-e23476e3cca6")    
 
 # Function to render the sidebar menu
-
 def render_sidebar_menu():
-    if st.checkbox("Use url", value=True):
-        add_logo("https://i.pinimg.com/originals/43/fe/fb/43fefbaf627a174b43edde282f1f20df.png/120/120")
-    
-    st.sidebar.title("Sneaker Talk")
+    display_banner()
+    st.sidebar.title("SneakerDealer")
 
     # If the user is logged in, display their username and a logout button
     if 'token' in st.session_state and st.session_state['token']:
@@ -322,6 +323,8 @@ def render_sidebar_menu():
             st.session_state.clear()
             st.experimental_rerun()
     else:
+        # if not st.session_state['token']:
+        #     st.sidebar.write("Please log in.")
         rain(
         emoji="👟",
         font_size=54,
@@ -337,7 +340,7 @@ def render_sidebar_menu():
 
     # Display the rest of the menu items only if the user is logged in
     if 'token' in st.session_state and st.session_state['token']:
-        menu = ["Home", "View Post", "Add Post", "Search", "Manage Blog"]
+        menu = ["Home 🏠", "View Post 📋", "Add Post ➕", "Search 🔍", "Manage Blog 🔨"]
         choice = st.sidebar.selectbox("Menu", menu)
         handle_menu_choice(choice)
 
@@ -345,9 +348,9 @@ def render_sidebar_menu():
 
 # Function to handle menu choice
 def handle_menu_choice(choice):    
+    st.session_state['current_choice'] = choice
   
-    if choice == "Home":
-        st.subheader("Home")
+    if choice == "Home 🏠":
         rain(
         emoji="👟",
         font_size=54,
@@ -356,8 +359,8 @@ def handle_menu_choice(choice):
     )
         # Display home page content here
 
-    elif choice == "View Post":
-        st.subheader("View Posts")
+    elif choice == "View Post 📋":
+        colored_header(label="View Posts",description = None, color_name = "violet-70")
         all_posts = get_all_posts()  # Fetch all posts from the posts service
 
         if all_posts:
@@ -407,7 +410,7 @@ def handle_menu_choice(choice):
         
 
         # Display post viewing functionality here
-    elif choice == "Add Post":
+    elif choice == "Add Post ➕":
         st.subheader("Add Your Post")
         
         # Begin the form for adding a post
@@ -433,7 +436,7 @@ def handle_menu_choice(choice):
 
 
 
-    elif choice == "Search":
+    elif choice == "Search 🔍":
         st.subheader("Search Posts")
 
         # Use session state to retain the search query
@@ -494,7 +497,7 @@ def handle_menu_choice(choice):
 
 
 
-    elif choice == "Manage Blog":
+    elif choice == "Manage Blog 🔨":
         st.subheader("Manage Blog")
         render_post_management_section()
         # Display blog management functionality here
@@ -519,26 +522,30 @@ def login_user_form():
         submit_button = st.form_submit_button(label="Login")
         if submit_button:
             login_user(username, password)
+        
 
 # Main function to coordinate the app
 def main():
     # Initialize session state for token if it doesn't exist
-
-    
+    icon_size = 22
     if 'token' not in st.session_state:
-        st.session_state['token'] = None
+        st.session_state['token'] = None      
 
     # Render the sidebar menu
     render_sidebar_menu()
 
     # Check if the user is logged in and display the main page
     if not st.session_state['token']:
-        st.write("Please log in.")
+        st.sidebar.write("Please log in.")
 
-    st.header("Welcome to SneakerTalk")
-    st.markdown("---")
-    st.write("This is a Sneakers blog forum in which users can discuss, sell, or trade their own Sneakers 👟")
-         
+    if st.session_state.get('current_choice') not in ["View Post 📋", "Add Post ➕", "Search 🔍", "Manage Blog 🔨"]:
+        colored_header(label="Welcome to SneakerDealer",description = None, color_name = "violet-70")
+        st.write("Welcome to the ultimate destination for sneaker enthusiasts – a vibrant community where passion for sneakers transcends the ordinary. Dive into our world where every step tells a story; a place where you can unleash your sneaker obsession, showcase your collection, and connect with fellow aficionados. Whether you're here to discover the latest trends, buy the pair you've been dreaming of, sell gems from your collection, or trade kicks with others, you've found your haven. Our blog is the pulse of sneaker culture, offering insights, reviews, and discussions on everything from vintage classics to the newest drops. Join us in celebrating the art and soul of sneakers. Step in and make your mark in the ever-evolving sneaker saga. 👟")
+
+
+        st.write("Compare prices with [StockX](https://stockx.com/)")   
+
+        st.write("Check future drops with [Droplist](https://www.drop-list.com/)")       
     
 
 if __name__ == "__main__":
