@@ -32,7 +32,7 @@ To get started, ensure you have Docker and Docker Compose installed on your syst
 
 1. Use Docker Compose to start the application:
     ```
-    docker-compose up -d
+    docker-compose up --build
     ```
 2. Once the containers are operational, the application's front-end can be accessed at `http://localhost:8501`.
 
